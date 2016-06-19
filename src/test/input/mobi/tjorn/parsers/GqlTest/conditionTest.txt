@@ -1,0 +1,16 @@
+a is null
+
+a = null
+a = "foo"
+a >= 1
+a <= 2.3
+a CONTAINS "2"
+a has ancestor "b"
+
+null = b
+"foo" = b
+1 >= b
+2.3 <= b
+"2" IN b
+"a" has descendant b
+

@@ -1,0 +1,5 @@
+= < <= > >=
+IN
+HAS DESCENDANT
+in
+has descendant

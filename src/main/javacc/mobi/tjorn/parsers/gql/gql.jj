@@ -1,0 +1,505 @@
+/*
+ * Copyright 2016 TJORN LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+options {
+    STATIC = false;
+    IGNORE_CASE = false;
+    DEBUG_PARSER = false;
+    DEBUG_LOOKAHEAD = false;
+    FORCE_LA_CHECK = false;
+    DEBUG_TOKEN_MANAGER = false;
+    SANITY_CHECK = true;
+    JAVA_UNICODE_ESCAPE = true;
+}
+
+PARSER_BEGIN(GqlParser)
+package mobi.tjorn.parsers.gql;
+
+public class GqlParser {
+  private void matchNames(String...names) throws ParseException {
+    matchNames(getToken(0), names);
+  }
+
+  private static void matchNames(Token t, String...names) throws ParseException {
+    Util.matchNames(t, names);
+  }
+}
+PARSER_END(GqlParser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+/**
+ * Operators
+ */
+TOKEN:
+{
+    <OP_EQ: "=">
+  | <OP_LT: "<">
+  | <OP_LE: "<=">
+  | <OP_GT: ">">
+  | <OP_GE: ">=">
+}
+
+/**
+ * Keywords
+ */
+TOKEN [IGNORE_CASE] :
+{
+    <K_ALL: "ALL">
+  | <K_ANCESTOR: "ANCESTOR">
+  | <K_AND: "AND">
+  | <K_ANY: "ANY">
+  | <K_AS: "AS">
+  | <K_ASC: "ASC">
+  | <K_BETWEEN: "BETWEEN">
+  | <K_BINARY: "BINARY">
+  | <K_BY: "BY">
+  | <K_CHILD: "CHILD">
+  | <K_CONTAINS: "CONTAINS">
+  | <K_CURSOR: "CURSOR">
+  | <K_DESC: "DESC">
+  | <K_DESCENDANT: "DESCENDANT">
+  | <K_DISTINCT: "DISTINCT">
+  | <K_DIV: "DIV">
+  | <K_EXISTS: "EXISTS">
+  | <#K_FALSE: "FALSE">
+  | <K_FROM: "FROM">
+  | <K_GROUP: "GROUP">
+  | <K_HAS: "HAS">
+  | <K_HAVING: "HAVING">
+  | <K_IN: "IN">
+  | <K_IS: "IS">
+  | <K_JOIN: "JOIN">
+  | <K_LIKE: "LIKE">
+  | <K_LIMIT: "LIMIT">
+  | <K_MOD: "MOD">
+  | <K_NOT: "NOT">
+  | <#K_NULL: "NULL">
+  | <K_OFFSET: "OFFSET">
+  | <K_ON: "ON">
+  | <K_OR: "OR">
+  | <K_ORDER: "ORDER">
+  | <K_PARENT: "PARENT">
+  | <K_REGEXP: "REGEXP">
+  | <K_RLIKE: "RLIKE">
+  | <K_SELECT: "SELECT">
+  | <K_SUBSET: "SUBSET">
+  | <K_SUPERSET: "SUPERSET">
+  | <#K_TRUE: "TRUE">
+  | <K_WHERE: "WHERE">
+  | <K_XOR: "XOR">
+}
+
+/**
+ * Case-insensitive tokens
+ */
+TOKEN [IGNORE_CASE]:
+{
+    <NULL_LITERAL: <K_NULL> >
+  | <BOOL_LITERAL: <K_TRUE> | <K_FALSE>>
+}
+
+/**
+ * Case-sensitive tokens
+ */
+TOKEN:
+{
+    <#DIGIT: ["0"-"9"]>
+  | <DOUBLE_LITERAL:
+        (
+            (["+", "-"])? // optional sign
+            (
+                (<DIGIT>)* "." (<DIGIT>)+  // support for .N
+              | (<DIGIT>)+ "." (<DIGIT>)*  // support for N.
+            )
+            ( ["e", "E"] (["+", "-"])? (<DIGIT>)+ )? // optional exponent
+        )
+      | (<INT_LITERAL> ["e", "E"] (["+", "-"])? (<DIGIT>)+)
+    >
+  | <INT_LITERAL: (["+", "-"])? (<DIGIT>)+>
+  | <#ESC: "\\" ["\\","0","b","n","r","t","Z","'","\"","`","%", "_"]>
+  | <#HH: ((["0"-"1"] ["0"-"9"]) | (["2"] ["0"-"3"]))>
+  | <#MM: ["0"-"5"] ["0"-"9"]>
+  | <#SS: <MM>>
+  | <#DATETIME:
+       ["0"-"9"] ["0"-"9"] ["0"-"9"] ["1"-"9"] "-" // YYYY
+       ((["0"] ["1"-"9"]) | (["1"] ["0"-"2"])) "-" // MM
+       ((["0"-"2"] ["0"-"9"]) | (["3"] ["0"-"1"])) ["t", "T"] // DD
+       <HH> ":" // hh
+       <MM> ":" // mm
+       <SS> // ss
+       ("." ["0"-"9"] (["0"-"9"] (["0"-"9"] (["0"-"9"] (["0"-"9"] (["0"-"9"])?)?)?)?)?)?
+       (["z", "Z"] | (["+", "-"] <HH> ":" <MM>))
+    >
+  | <DATETIME_LITERAL: ("\"" <DATETIME> "\"") | ("'" <DATETIME> "'")>
+  | <#BLOB: (["a"-"z", "A"-"Z", "0"-"9", "-", "_"])+>
+  | <BLOB_LITERAL: ("\"" <BLOB> "\"") | ("'" <BLOB> "'")>
+  | <STRING_LITERAL:
+        ( // double-quoted string literal
+            "\""
+            (
+                ~["\"","\\","\n","\r"]
+              | <ESC>
+              | "\"\""
+            )*
+            "\""
+        )
+      | ( // single-quoted string literal
+            "'"
+            (
+                ~["'","\\","\n","\r"]
+              | <ESC>
+              | "''"
+            )*
+            "'"
+        )
+    >
+  | <#LETTER: ["a"-"z", "A"-"Z"]>
+  | <#NAME_CHAR:
+        (<LETTER>)
+      | (<DIGIT>)
+      | ["_", "$", "\u0080"-"\uFFFF"]
+    >
+}
+
+/**
+ * A special token for binding site.
+ */
+TOKEN :
+{
+    <AT: "@"> : BINDING
+}
+
+/**
+ * <NAME> is used in DEFAULT state and BINDING state.
+ * When it is used in BINDING state, no spaces are allowed between
+ * <AT> and <NAME>.
+ */
+<DEFAULT, BINDING> TOKEN :
+{
+    <NAME:
+        (
+            <NAME_CHAR>
+            (
+                <NAME_CHAR>
+              | (<DIGIT>)
+            )*
+        )
+      | (  // back-quoted string
+            "`"
+            (
+                ~["`","\\","\n","\r"]
+              | <ESC>
+              | "``"
+            )*
+            "`"
+        )
+    > : DEFAULT
+}
+
+public PropertyName PropertyName() :
+{ Token name = null; MorePropertyNameSteps next = null; }
+{
+    ( name = <NAME> next = MorePropertyNameSteps() )
+    { return new PropertyName(name, next); }
+}
+
+public MorePropertyNameSteps MorePropertyNameSteps() :
+{ Token name = null; MorePropertyNameSteps next = null; }
+{
+    ("." name = <NAME> next = MorePropertyNameSteps())?
+    { return name == null ? null : new MorePropertyNameSteps(name, next); }
+}
+
+
+public PropertyNameList PropertyNameList() :
+{ PropertyName propertyName = null; MorePropertyNames next = null; }
+{
+    ( propertyName = PropertyName() next = MorePropertyNames() )
+    { return new PropertyNameList(propertyName, next); }
+}
+
+public MorePropertyNames MorePropertyNames() :
+{ PropertyName propertyName = null; MorePropertyNames next = null; }
+{
+    ("," propertyName = PropertyName() next = MorePropertyNames())?
+    { return propertyName == null ? null : new MorePropertyNames(propertyName, next); }
+}
+
+public OrderedPropertyName OrderedPropertyName() :
+{ PropertyName propertyName = null; Token sortOrder = null; }
+{
+    ( propertyName = PropertyName() (sortOrder = <K_ASC> | sortOrder = <K_DESC>)? )
+    { return new OrderedPropertyName(propertyName, sortOrder); }
+}
+
+public OrderedPropertyNameList OrderedPropertyNameList() :
+{ OrderedPropertyName propertyName = null; MoreOrderedPropertyNames next = null; }
+{
+     ( propertyName = OrderedPropertyName() next = MoreOrderedPropertyNames() )
+     { return new OrderedPropertyNameList(propertyName, next); }
+}
+
+public MoreOrderedPropertyNames MoreOrderedPropertyNames() :
+{ OrderedPropertyName propertyName = null; MoreOrderedPropertyNames next = null; }
+{
+    ("," propertyName = OrderedPropertyName() next = MoreOrderedPropertyNames())?
+    { return propertyName == null ? null : new MoreOrderedPropertyNames(propertyName, next); }
+}
+
+public Kind Kind() :
+{ Token name = null; }
+{
+    name = <NAME>
+    { return new Kind(name); }
+}
+
+public StringLiteral StringLiteral() :
+{ Token literal = null; }
+{
+    ( literal = <DATETIME_LITERAL> | literal = <BLOB_LITERAL> | literal = <STRING_LITERAL> )
+    { return new StringLiteral(literal); }
+}
+
+public KeyPathElement KeyPathElement() :
+{ Kind kind = null; Token intLiteral = null; StringLiteral stringLiteral = null; }
+{
+    ( kind = Kind() "," ( intLiteral = <INT_LITERAL> | stringLiteral = StringLiteral() ) )
+    { return new KeyPathElement(kind, intLiteral, stringLiteral); }
+}
+
+public KeyPathElementList KeyPathElementList() :
+{ KeyPathElement element = null; MoreKeyPathElements next = null; }
+{
+    ( element = KeyPathElement() next = MoreKeyPathElements() )
+    { return new KeyPathElementList(element, next); }
+}
+
+public MoreKeyPathElements MoreKeyPathElements() :
+{ KeyPathElement element = null; MoreKeyPathElements next = null; }
+{
+    ("," element = KeyPathElement() next = MoreKeyPathElements())?
+    { return element == null ? null : new MoreKeyPathElements(element, next); }
+}
+
+public SyntheticLiteral SyntheticLiteral() :
+{
+    Token t1 = null, t2 = null;
+    StringLiteral project = null, namespace = null;
+    KeyPathElementList elemList = null;
+    Token literal = null;
+}
+{
+    (
+        LOOKAHEAD(3) (
+            <NAME> { matchNames("KEY"); } "("
+                (LOOKAHEAD(2) t1 = <NAME> "(" project = StringLiteral() ")" ",")?
+                (LOOKAHEAD(2) t2 = <NAME> "(" namespace = StringLiteral() ")" ",")?
+                {
+                    if (t1 != null) {
+                        if (t2 == null) {
+                            matchNames(t1, "PROJECT", "NAMESPACE");
+                            if (!Util.matches(t1, "PROJECT")) {
+                                namespace = project;
+                                project = null;
+                            }
+                        } else {
+                            matchNames(t1, "PROJECT");
+                            matchNames(t2, "NAMESPACE");
+                        }
+                    }
+                }
+                elemList = KeyPathElementList()
+            ")"
+        )
+      | LOOKAHEAD(3) (<NAME> { matchNames("BLOB"); } "(" literal = <BLOB_LITERAL> ")")
+      | (<NAME> { matchNames("DATETIME"); } "(" literal = <DATETIME_LITERAL> ")")
+    )
+    { return new SyntheticLiteral(project, namespace, elemList, literal); }
+}
+
+public BindingSite BindingSite() :
+{ Token name = null; }
+{
+    ( <AT> name = <NAME> )
+    { return new BindingSite(name); }
+}
+
+public Value Value() :
+{
+    BindingSite bindingSite = null;
+    SyntheticLiteral syntheticLiteral = null;
+    StringLiteral stringLiteral = null;
+    Token literal = null;
+}
+{
+    (
+        bindingSite = BindingSite()
+      | syntheticLiteral = SyntheticLiteral()
+      | stringLiteral = StringLiteral()
+      | literal = <INT_LITERAL>
+      | literal = <DOUBLE_LITERAL>
+      | literal = <BOOL_LITERAL>
+      | literal = <NULL_LITERAL>
+    )
+    { return new Value(bindingSite, syntheticLiteral, stringLiteral, literal); }
+}
+
+public ForwardComparator ForwardComparator() :
+{
+    EitherComparator eitherComparator = null;
+    Token contains = null;
+    Token hasAncestor = null;
+}
+{
+    (
+        eitherComparator = EitherComparator()
+      | contains = <K_CONTAINS>
+      | hasAncestor = <K_HAS> <K_ANCESTOR>
+    )
+    { return new ForwardComparator(eitherComparator, Util.is(contains), Util.is(hasAncestor)); }
+}
+
+public BackwardComparator BackwardComparator() :
+{
+    EitherComparator eitherComparator = null;
+    Token in = null;
+    Token hasDescendant = null;
+}
+{
+    (
+        eitherComparator = EitherComparator()
+      | in = <K_IN>
+      | hasDescendant = <K_HAS> <K_DESCENDANT>
+    )
+    { return new BackwardComparator(eitherComparator, Util.is(in), Util.is(hasDescendant)); }
+}
+
+public EitherComparator EitherComparator() :
+{ Token op = null; }
+{
+    ( op = <OP_EQ> | op = <OP_LE> | op = <OP_LT> | op = <OP_GE> | op = <OP_GT> )
+    { return new EitherComparator(op); }
+}
+
+public Condition Condition() :
+{
+    PropertyName propertyName = null;
+    Value value = null;
+    ForwardComparator fc = null;
+    BackwardComparator bc = null;
+}
+{
+    (
+        LOOKAHEAD(2) propertyName = PropertyName() <K_IS> <NULL_LITERAL>
+      | propertyName = PropertyName() fc = ForwardComparator() value = Value()
+      | value = Value() bc = BackwardComparator() propertyName = PropertyName()
+    )
+    { return new Condition(propertyName, value, fc, bc); }
+}
+
+public CompoundCondition CompoundCondition() :
+{ Condition condition = null; MoreConditions next = null; }
+{
+    ( condition = Condition() next = MoreConditions() )
+    { return new CompoundCondition(condition, next); }
+}
+
+public MoreConditions MoreConditions() :
+{ Condition condition = null; MoreConditions next = null; }
+{
+    (<K_AND> condition = Condition() next = MoreConditions())?
+    { return condition == null ? null : new MoreConditions(condition, next); }
+}
+
+public ResultPosition ResultPosition() :
+{ BindingSite bindingSite = null; Token intLiteral = null; }
+{
+    ( bindingSite = BindingSite() | intLiteral = <INT_LITERAL> )
+    { return new ResultPosition(bindingSite, intLiteral); }
+}
+
+public DistinctOn DistinctOn() :
+{ PropertyNameList distinctOn = null, projection = null; }
+{
+    <K_DISTINCT> <K_ON> "(" distinctOn = PropertyNameList() ")"
+    (
+        "*"
+      | projection = PropertyNameList()
+    )
+    { return new DistinctOn(distinctOn, projection); }
+}
+
+public Projection Projection() :
+{
+    PropertyNameList projection = null;
+    Token distinct = null;
+    DistinctOn distinctOn = null;
+}
+{
+    <K_SELECT> (
+        "*"
+      | projection = PropertyNameList()
+      | LOOKAHEAD(2) distinct = <K_DISTINCT> projection = PropertyNameList()
+      | distinctOn = DistinctOn()
+    )
+    { return new Projection(projection, Util.is(distinct), distinctOn); }
+}
+
+public Limit Limit() :
+{ ResultPosition first = null, second = null; }
+{
+    <K_LIMIT> (
+        first = ResultPosition()
+      | (<NAME> { matchNames("FIRST"); } "(" first = ResultPosition() "," second = ResultPosition() ")")
+    )
+    { return new Limit(first, second); }
+}
+
+public Offset Offset() :
+{ ResultPosition first = null, second = null; }
+{
+    <K_OFFSET> first = ResultPosition() ("+" second = ResultPosition())?
+    { return new Offset(first, second); }
+}
+
+public Query Query() :
+{
+    Projection select = null;
+    Kind from = null;
+    CompoundCondition where = null;
+    OrderedPropertyNameList orderBy = null;
+    Limit limit = null;
+    Offset offset = null;
+}
+{
+    (
+        select = Projection()
+        (<K_FROM> from = Kind())?
+        (<K_WHERE> where = CompoundCondition())?
+        (<K_ORDER> <K_BY> orderBy = OrderedPropertyNameList())?
+        (limit = Limit())?
+        (offset = Offset())?
+    )
+    { return new Query(select, from, where, orderBy, limit, offset); }
+}

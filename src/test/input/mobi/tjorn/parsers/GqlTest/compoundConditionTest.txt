@@ -1,0 +1,4 @@
+a is null
+a is null and b = 2
+a is null and b = 2 and c CONTAINS "3"
+a is null and b = 2 and c CONTAINS "3" and "abc" IN d

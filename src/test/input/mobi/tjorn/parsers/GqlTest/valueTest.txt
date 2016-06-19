@@ -1,0 +1,10 @@
+"a" "123a"
+TRUE false
+NULL null
+123 3456
+234.5 65.33E-2
+@`true`
+@foo
+KEY (PROJECT("FOO"), NAMESPACE("BAR"), a1 , 12, a2, "test")
+BLOB("abcDEF123-_")
+DATETIME("2013-09-29T09:30:20.000002-08:00")

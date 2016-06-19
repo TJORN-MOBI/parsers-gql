@@ -1,0 +1,11 @@
+select *
+select foo
+select foo.bar, foo.xyz
+select distinct foo.bar, foo.xyz
+select distinct on (foo.bar, foo.xyz) *
+select distinct on (foo.bar) foo.bar, foo.xyz
+
+
+
+
+

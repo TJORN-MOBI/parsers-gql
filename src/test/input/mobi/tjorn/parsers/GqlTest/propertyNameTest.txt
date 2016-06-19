@@ -1,0 +1,19 @@
+a1
+a2
+a1.a1
+__key__
+foo
+bar17
+x_y
+big$bux
+__qux__
+`fig-bash`
+`x.y`
+`silly``putty`
+`x.y`.a15
+``
+`a`
+`123a`
+` \\ \0 \b \n \r \t \Z \' \" \` \% \_ `
+` `` """ ''' `` `
+\u1234a2.\u3456c3.a4.\u2345

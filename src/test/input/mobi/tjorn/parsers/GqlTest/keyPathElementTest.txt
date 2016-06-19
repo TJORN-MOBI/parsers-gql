@@ -1,0 +1,16 @@
+a1 , 12
+a2 , "test"
+__key__ , 'foo'
+foo, "4345"
+bar17, 'abcd'
+x_y, "bar"
+big$bux, 23
+__qux__, 'test'
+`fig-bash`, 43
+`x.y`, "he he he"
+`silly``putty`, 87473
+`a`,23
+`123a`,'43434erer'
+` \\ \0 \b \n \r \t \Z \' \" \` \% \_ `,57473
+` `` """ ''' `` `,"kjfdalfkja"
+\u1234a2,543

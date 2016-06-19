@@ -1,0 +1,7 @@
+distinct on (a) *
+distinct on (a, b, c) *
+distinct on (a) a, b, c
+distinct on (a, b, c) c.d, e.f, g.h
+distinct on (c.d, e.f, g.h) a, b, c
+
+

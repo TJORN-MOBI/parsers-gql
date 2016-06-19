@@ -1,0 +1,7 @@
+KEY (a1 , 12)
+KEY (a1 , 12, a2, "test")
+KEY (PROJECT("FOO"), a1 , 12, a2, "test")
+KEY (NAMESPACE("BAR"), a1 , 12, a2, "test")
+KEY (PROJECT("FOO"), NAMESPACE("BAR"), a1 , 12, a2, "test")
+BLOB("abcDEF123-_")
+DATETIME("2013-09-29T09:30:20.000002-08:00")

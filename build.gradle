@@ -1,0 +1,97 @@
+plugins {
+    id "java"
+    id "ca.coglinc.javacc" version "2.3.1"
+    id "com.jfrog.bintray" version "1.6"
+    id "maven-publish"
+}
+
+apply plugin: 'com.jfrog.bintray'
+
+repositories {
+    jcenter()
+}
+
+def localProps = new Properties()
+localProps.load(project.rootProject.file('local.properties').newDataInputStream())
+
+group 'mobi.tjorn.parsers'
+version '1.0.0'
+description 'GQL Parser'
+def artifactBaseName = 'gql'
+
+jar {
+    baseName artifactBaseName
+}
+
+task makeSourcesJar(type: Jar) {
+    dependsOn compileJavacc
+    baseName artifactBaseName
+    classifier 'sources'
+    extension 'jar'
+    from 'src/main/java'
+    from compileJavacc.outputDirectory
+}
+
+task makeJavadocs(type: Javadoc) {
+    dependsOn compileJavacc
+    source 'src/main/java'
+    source compileJavacc.outputDirectory
+    destinationDir = file("$buildDir/docs/$artifactBaseName")
+}
+
+task makeJavadocsJar(type: Jar) {
+    dependsOn makeJavadocs
+    baseName artifactBaseName
+    classifier 'javadoc'
+    extension 'jar'
+    from "$buildDir/docs/$artifactBaseName"
+}
+
+publishing {
+    publications {
+        gql(MavenPublication) {
+            artifact jar
+            artifact makeSourcesJar
+            artifact makeJavadocsJar
+            pom.withXml {
+                asNode().appendNode('description', project.description)
+            }
+        }
+    }
+}
+
+bintray {
+    user = localProps.getProperty('bintray.user')
+    key = localProps.getProperty('bintray.key')
+    publications = ['gql']
+    pkg {
+        repo = 'maven'
+        name = 'gql'
+        userOrg = 'tjorn-mobi'
+        desc = project.description
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/TJORN-MOBI/parsers-gql.git'
+        publicDownloadNumbers = true
+        version {
+            name = project.version
+            desc = 'Initial version'
+            vcsTag = '1.0.0'
+            gpg {
+                sign = true
+                passphrase = localProps.getProperty('bintray.gpg.passphrase')
+            }
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir compileJavacc.outputDirectory
+        }
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}

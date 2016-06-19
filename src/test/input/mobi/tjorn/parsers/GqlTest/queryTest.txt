@@ -1,0 +1,34 @@
+select *
+select foo
+select foo.bar, foo.xyz
+select distinct foo.bar, foo.xyz
+select distinct on (foo.bar, foo.xyz) *
+select distinct on (foo.bar) foo.bar, foo.xyz
+
+select * from MyEntity
+select foo from MyEntity
+select foo.bar, foo.xyz from MyEntity
+select distinct foo.bar, foo.xyz from MyEntity
+select distinct on (foo.bar, foo.xyz) * from MyEntity
+select distinct on (foo.bar) foo.bar, foo.xyz from MyEntity
+
+
+select * from MyEntity where foo = "abc"
+select * from MyEntity where foo = "abc" and "xyz" = bar
+select * from MyEntity where foo = @var1 and @var2 = bar
+select * from MyEntity where foo = "abc" and "xyz" = bar and foo contains "abc" and "xyz" in bar
+select * from MyEntity where foo has ancestor "abc" and "xyz" has descendant bar
+
+select distinct on (foo.bar) foo.bar, foo.xyz order by a asc, b desc, c
+
+select distinct on (foo.bar) foo.bar, foo.xyz limit 2
+select distinct on (foo.bar) foo.bar, foo.xyz limit @var
+select distinct on (foo.bar) foo.bar, foo.xyz limit first (2, @var)
+select distinct on (foo.bar) foo.bar, foo.xyz limit @var offset 2
+select distinct on (foo.bar) foo.bar, foo.xyz limit first (2, @var) offset 2+@var
+select distinct on (foo.bar) foo.bar, foo.xyz offset 2+@var
+
+
+
+
+
