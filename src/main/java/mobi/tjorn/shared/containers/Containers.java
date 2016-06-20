@@ -35,6 +35,7 @@ public final class Containers {
      * @param <T> Element type.
      * @return An empty {@link Series}
      */
+    @SuppressWarnings("unchecked")
     public static <T> Series<T> emptySeries() {
         return (Series<T>) instance;
     }
@@ -45,7 +46,7 @@ public final class Containers {
      * @param <E> Element type.
      * @return A singleton {@link Series}.
      */
-    public static <E> Series<E> singletonSeries(E element) {
+    public static <E, T extends E> Series<E> singletonSeries(T element) {
         return new Series1<E>(element);
     }
 
@@ -56,7 +57,8 @@ public final class Containers {
      * @param <E> Element type.
      * @return A {@link Series}.
      */
-    public static <E> Series<E> series(E...elements) {
+    @SuppressWarnings("unchecked")
+    public static <E, T extends E> Series<E> series(T...elements) {
         return new SeriesN<E>(elements);
     }
 
@@ -68,7 +70,8 @@ public final class Containers {
      * @param <E> Element type.
      * @return A {@link Series}.
      */
-    public static <E> Series<E> flexSeries(Class<E> cls, E...elements) {
+    @SuppressWarnings("unchecked")
+    public static <E, T extends E> Series<E> flexSeries(Class<E> cls, T...elements) {
         int count = 0, last = -1;
         if (elements != null) {
             for (int i=0; i<elements.length; ++i) {
@@ -87,6 +90,7 @@ public final class Containers {
         if (count == elements.length) {
             return series(elements);
         }
+        @SuppressWarnings("unchecked")
         final E[] buf = (E[]) Array.newInstance(cls, count);
         int idx = -1;
         for (int i=0; i<elements.length; ++i) {

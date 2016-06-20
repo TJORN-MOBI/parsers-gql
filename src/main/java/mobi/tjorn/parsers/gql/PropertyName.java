@@ -42,7 +42,10 @@ public class PropertyName implements Node {
 
     @Override
     public Series<Node> children() {
-        return next == null ? Containers.emptySeries() : Containers.singletonSeries(next);
+        if (next == null) {
+            return Containers.emptySeries();
+        }
+        return Containers.singletonSeries(next);
     }
 
     @Override

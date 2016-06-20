@@ -42,7 +42,10 @@ public class MoreKeyPathElements implements Node {
 
     @Override
     public Series<Node> children() {
-        return next == null ? Containers.singletonSeries(element) : Containers.series(element, next);
+        if (next == null) {
+            return Containers.singletonSeries(element);
+        }
+        return Containers.series(element, next);
     }
 
     @Override

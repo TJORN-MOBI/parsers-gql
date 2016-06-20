@@ -42,7 +42,10 @@ public class MoreConditions implements Node {
 
     @Override
     public Series<Node> children() {
-        return next == null ? Containers.singletonSeries(condition) : Containers.series(condition, next);
+        if (next == null) {
+            return Containers.singletonSeries(condition);
+        }
+        return Containers.series(condition, next);
     }
 
     @Override
