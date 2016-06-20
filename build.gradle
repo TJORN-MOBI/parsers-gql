@@ -27,7 +27,7 @@ def localProps = new Properties()
 localProps.load(project.rootProject.file('local.properties').newDataInputStream())
 
 group 'mobi.tjorn.parsers'
-version '1.0.0'
+version '1.0.1'
 description 'GQL Parser'
 def artifactBaseName = 'gql'
 
@@ -86,8 +86,8 @@ bintray {
         publicDownloadNumbers = true
         version {
             name = project.version
-            desc = 'Initial version'
-            vcsTag = '1.0.0'
+            desc = 'Migrated code from Java 8 to Java 7 to simplify usage in Android projects.'
+            vcsTag = 'v' + project.version
             gpg {
                 sign = true
                 passphrase = localProps.getProperty('bintray.gpg.passphrase')
