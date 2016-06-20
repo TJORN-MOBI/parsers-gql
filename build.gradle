@@ -5,10 +5,22 @@ plugins {
     id "maven-publish"
 }
 
-apply plugin: 'com.jfrog.bintray'
+sourceCompatibility = 1.7
 
 repositories {
     jcenter()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir compileJavacc.outputDirectory
+        }
+    }
+}
+
+compileJava {
+    options.compilerArgs << "-Xlint:unchecked"
 }
 
 def localProps = new Properties()
@@ -80,14 +92,6 @@ bintray {
                 sign = true
                 passphrase = localProps.getProperty('bintray.gpg.passphrase')
             }
-        }
-    }
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir compileJavacc.outputDirectory
         }
     }
 }
