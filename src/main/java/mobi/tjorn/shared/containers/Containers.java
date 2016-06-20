@@ -43,7 +43,8 @@ public final class Containers {
     /**
      * Returns a singleton {@link Series}.
      * @param element An element of the singleton {@link Series}.
-     * @param <E> Element type.
+     * @param <E> Base element type.
+     * @param <T> Actual element type.
      * @return A singleton {@link Series}.
      */
     public static <E, T extends E> Series<E> singletonSeries(T element) {
@@ -54,7 +55,8 @@ public final class Containers {
      * Returns a series of multiple elements.  It is up to you to ensure that {@code elements} contains no {@code null}s.
      * If {@code elements} contains {@code null}s, use {@link #flexSeries(Class, Object[])} to filter {@code null}s out.
      * @param elements Elements of the {@link Series}.
-     * @param <E> Element type.
+     * @param <E> Base element type.
+     * @param <T> Actual element type.
      * @return A {@link Series}.
      */
     @SuppressWarnings("unchecked")
@@ -67,7 +69,8 @@ public final class Containers {
      * or {@link #series(Object[])} depending on the count of non-{@code null} elements.
      * @param cls Element class.
      * @param elements Elements of the series.
-     * @param <E> Element type.
+     * @param <E> Base element type.
+     * @param <T> Actual element types.
      * @return A {@link Series}.
      */
     @SuppressWarnings("unchecked")
