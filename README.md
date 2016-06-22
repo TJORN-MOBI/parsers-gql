@@ -7,7 +7,7 @@ A parser that implements [Google Query Language](https://cloud.google.com/datast
 If you are interested in doing more with your query strings than passing them over 
 to [Google Cloud Datastore](https://cloud.google.com/datastore/), you may find this project useful.
 
-GqlParser coverts a GQL query string to a parse tree. 
+GqlParser converts a GQL query string to a parse tree. 
 The parser can parse any query sub-string representing a valid production. 
 Full GQL grammar can be found at [qgl.jj](src/main/javacc/mobi/tjorn/parsers/gql/gql.jj) file.
 [GqlTest](src/test/java/mobi/tjorn/parsers/GqlTest.java) provides examples of parsing most GQL productions.
