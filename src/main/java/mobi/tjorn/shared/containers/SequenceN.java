@@ -20,6 +20,7 @@ import java.util.Iterator;
 
 /**
  * A {@link Sequence} of {@code N} elements.
+ *
  * @author yuri
  * @since 6/12/16.
  */

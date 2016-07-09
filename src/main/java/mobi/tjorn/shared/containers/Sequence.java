@@ -23,6 +23,18 @@ package mobi.tjorn.shared.containers;
  * @since 6/12/16.
  */
 public interface Sequence<E> extends Iterable<E> {
+    /**
+     * Returns the length of the sequence.
+     *
+     * @return The length of the sequence.
+     */
     int length();
+
+    /**
+     * Gets an element of the sequence at position {@code i}.
+     *
+     * @param i Position of the element in the sequence.
+     * @return An element of the sequence at position {@code i}.
+     */
     E elementAt(int i);
 }
