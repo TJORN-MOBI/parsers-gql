@@ -19,14 +19,14 @@ package mobi.tjorn.shared.containers;
 import java.util.Iterator;
 
 /**
- * A singleton {@link Series}.
+ * A singleton {@link Sequence}.
  * @author yuri
  * @since 6/12/16.
  */
-class Series1<T> implements Series<T> {
+class Sequence1<T> implements Sequence<T> {
     private final T element;
 
-    Series1(T element) {
+    Sequence1(T element) {
         assert element != null;
         this.element = element;
     }

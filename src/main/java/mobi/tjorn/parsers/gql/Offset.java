@@ -17,7 +17,7 @@
 package mobi.tjorn.parsers.gql;
 
 import mobi.tjorn.shared.containers.Containers;
-import mobi.tjorn.shared.containers.Series;
+import mobi.tjorn.shared.containers.Sequence;
 
 /**
  * @author yuri
@@ -41,7 +41,7 @@ public class Offset implements Node {
     }
 
     @Override
-    public Series<Node> children() {
+    public Sequence<Node> children() {
         switch (getType()) {
             case SINGLE:
                 return Containers.singletonSeries(first);

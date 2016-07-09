@@ -19,28 +19,23 @@ package mobi.tjorn.shared.containers;
 import java.util.Iterator;
 
 /**
- * A {@link Series} of {@code N} elements.
+ * An empty {@link Sequence}.
+ *
  * @author yuri
  * @since 6/12/16.
  */
-class SeriesN<T> implements Series<T> {
-    private final T[] elements;
-
-    SeriesN(T[] elements) {
-        this.elements = elements;
+class Sequence0<T> implements Sequence<T> {
+    Sequence0() {
     }
 
     @Override
     public int length() {
-        return elements == null ? 0 : elements.length;
+        return 0;
     }
 
     @Override
     public T elementAt(int i) {
-        if (i < 0 || length() <= i) {
-            throw new IndexOutOfBoundsException("Invalid index: " + i);
-        }
-        return elements[i];
+        throw new IndexOutOfBoundsException("Invalid index: " + i);
     }
 
     @Override
@@ -49,19 +44,14 @@ class SeriesN<T> implements Series<T> {
     }
 
     private class ElementIterator implements Iterator<T> {
-        private int position = -1;
-
         @Override
         public boolean hasNext() {
-            return position < length() - 1;
+            return false;
         }
 
         @Override
         public T next() {
-            if (! hasNext()) {
-                throw new IllegalStateException("Iterator is in invalid state");
-            }
-            return elements[++position];
+            throw new IllegalStateException("Iterator is in invalid state");
         }
     }
 }

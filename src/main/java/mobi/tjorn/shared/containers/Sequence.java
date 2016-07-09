@@ -22,7 +22,7 @@ package mobi.tjorn.shared.containers;
  * @author yuri
  * @since 6/12/16.
  */
-public interface Series<E> extends Iterable<E> {
+public interface Sequence<E> extends Iterable<E> {
     int length();
     E elementAt(int i);
 }

@@ -16,7 +16,7 @@
 
 package mobi.tjorn.parsers.gql;
 
-import mobi.tjorn.shared.containers.Series;
+import mobi.tjorn.shared.containers.Sequence;
 
 /**
  * Base node interface.
@@ -30,7 +30,7 @@ public interface Node {
      *
      * @return  Node children.
      */
-    Series<Node> children();
+    Sequence<Node> children();
 
     /**
      * Accepts a {@link Visitor}.
