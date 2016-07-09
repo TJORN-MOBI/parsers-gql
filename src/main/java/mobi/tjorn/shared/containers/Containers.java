@@ -25,43 +25,43 @@ import java.lang.reflect.Array;
  * @since 6/12/16.
  */
 public final class Containers {
-    private final static Series0<?> instance = new Series0<Void>();
+    private final static Sequence0<?> instance = new Sequence0<Void>();
 
     private Containers() {
     }
 
     /**
-     * Returns an empty {@link Series}.
+     * Returns an empty {@link Sequence}.
      * @param <T> Element type.
-     * @return An empty {@link Series}
+     * @return An empty {@link Sequence}
      */
     @SuppressWarnings("unchecked")
-    public static <T> Series<T> emptySeries() {
-        return (Series<T>) instance;
+    public static <T> Sequence<T> emptySeries() {
+        return (Sequence<T>) instance;
     }
 
     /**
-     * Returns a singleton {@link Series}.
-     * @param element An element of the singleton {@link Series}.
+     * Returns a singleton {@link Sequence}.
+     * @param element An element of the singleton {@link Sequence}.
      * @param <E> Base element type.
      * @param <T> Actual element type.
-     * @return A singleton {@link Series}.
+     * @return A singleton {@link Sequence}.
      */
-    public static <E, T extends E> Series<E> singletonSeries(T element) {
-        return new Series1<E>(element);
+    public static <E, T extends E> Sequence<E> singletonSeries(T element) {
+        return new Sequence1<E>(element);
     }
 
     /**
      * Returns a series of multiple elements.  It is up to you to ensure that {@code elements} contains no {@code null}s.
      * If {@code elements} contains {@code null}s, use {@link #flexSeries(Class, Object[])} to filter {@code null}s out.
-     * @param elements Elements of the {@link Series}.
+     * @param elements Elements of the {@link Sequence}.
      * @param <E> Base element type.
      * @param <T> Actual element type.
-     * @return A {@link Series}.
+     * @return A {@link Sequence}.
      */
     @SuppressWarnings("unchecked")
-    public static <E, T extends E> Series<E> series(T...elements) {
-        return new SeriesN<E>(elements);
+    public static <E, T extends E> Sequence<E> series(T...elements) {
+        return new SequenceN<E>(elements);
     }
 
     /**
@@ -71,10 +71,10 @@ public final class Containers {
      * @param elements Elements of the series.
      * @param <E> Base element type.
      * @param <T> Actual element types.
-     * @return A {@link Series}.
+     * @return A {@link Sequence}.
      */
     @SuppressWarnings("unchecked")
-    public static <E, T extends E> Series<E> flexSeries(Class<E> cls, T...elements) {
+    public static <E, T extends E> Sequence<E> flexSeries(Class<E> cls, T...elements) {
         int count = 0, last = -1;
         if (elements != null) {
             for (int i=0; i<elements.length; ++i) {
