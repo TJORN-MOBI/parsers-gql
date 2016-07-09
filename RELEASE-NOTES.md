@@ -1,5 +1,8 @@
 # GQL Parser Release Notes
 
+#####Version 1.1.0
+Breaking change: renamed Series interface to Sequence.
+
 #####Version 1.0.1
 Migrated code from Java 8 to Java 7.  No API changes.
 
