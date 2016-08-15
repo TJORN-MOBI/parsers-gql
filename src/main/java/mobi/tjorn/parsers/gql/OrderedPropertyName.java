@@ -42,7 +42,7 @@ public class OrderedPropertyName implements Node {
 
     @Override
     public Sequence<Node> children() {
-        return Containers.singletonSeries(propertyName);
+        return Containers.singletonSequence(propertyName);
     }
 
     @Override

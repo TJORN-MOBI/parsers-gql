@@ -43,9 +43,9 @@ public class PropertyName implements Node {
     @Override
     public Sequence<Node> children() {
         if (next == null) {
-            return Containers.emptySeries();
+            return Containers.emptySequence();
         }
-        return Containers.singletonSeries(next);
+        return Containers.singletonSequence(next);
     }
 
     @Override

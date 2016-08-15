@@ -36,7 +36,7 @@ public class EitherComparator implements Node {
 
     @Override
     public Sequence<Node> children() {
-        return Containers.emptySeries();
+        return Containers.emptySequence();
     }
 
     @Override

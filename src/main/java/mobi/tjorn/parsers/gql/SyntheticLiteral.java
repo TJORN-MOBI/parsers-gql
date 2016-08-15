@@ -57,19 +57,19 @@ public class SyntheticLiteral implements Node {
         switch (getType()) {
             case KEY:
                 if (project == null && namespace == null) {
-                    return Containers.singletonSeries(elementList);
+                    return Containers.singletonSequence(elementList);
                 }
                 if (namespace == null) {
-                    return Containers.series(project, elementList);
+                    return Containers.sequence(project, elementList);
                 }
                 if (project == null) {
-                    return Containers.series(namespace, elementList);
+                    return Containers.sequence(namespace, elementList);
                 }
-                return Containers.series(project, namespace, elementList);
+                return Containers.sequence(project, namespace, elementList);
             case BLOB:
             case DATETIME:
             default:
-                return Containers.emptySeries();
+                return Containers.emptySequence();
         }
     }
 

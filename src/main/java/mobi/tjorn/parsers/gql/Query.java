@@ -66,7 +66,7 @@ public class Query implements Node {
 
     @Override
     public Sequence<Node> children() {
-        return Containers.flexSeries(Node.class, select, from, where, orderBy, limit, offset);
+        return Containers.flexSequence(Node.class, select, from, where, orderBy, limit, offset);
     }
 
     @Override

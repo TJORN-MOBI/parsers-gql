@@ -43,9 +43,9 @@ public class KeyPathElementList implements Node {
     @Override
     public Sequence<Node> children() {
         if (next == null) {
-            return Containers.singletonSeries(element);
+            return Containers.singletonSequence(element);
         }
-        return Containers.series(element, next);
+        return Containers.sequence(element, next);
     }
 
     @Override

@@ -43,9 +43,9 @@ public class MoreOrderedPropertyNames implements Node {
     @Override
     public Sequence<Node> children() {
         if (next == null) {
-            return Containers.singletonSeries(propertyName);
+            return Containers.singletonSequence(propertyName);
         }
-        return Containers.series(propertyName, next);
+        return Containers.sequence(propertyName, next);
     }
 
     @Override

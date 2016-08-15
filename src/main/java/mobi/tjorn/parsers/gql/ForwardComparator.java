@@ -50,11 +50,11 @@ public class ForwardComparator implements Node {
     public Sequence<Node> children() {
         switch (getType()) {
             case EITHER:
-                return Containers.singletonSeries(eitherComparator);
+                return Containers.singletonSequence(eitherComparator);
             case CONTAINS:
             case HAS_ANCESTOR:
             default:
-                return Containers.emptySeries();
+                return Containers.emptySequence();
         }
     }
 

@@ -50,10 +50,10 @@ public class KeyPathElement implements Node {
     public Sequence<Node> children() {
         switch (getType()) {
             case STRING:
-                return Containers.series(kind, stringLiteral);
+                return Containers.sequence(kind, stringLiteral);
             case INT:
             default:
-                return Containers.singletonSeries(kind);
+                return Containers.singletonSequence(kind);
         }
     }
 

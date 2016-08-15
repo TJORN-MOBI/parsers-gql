@@ -56,13 +56,13 @@ public class Value implements Node {
     public Sequence<Node> children() {
         switch (getType()) {
             case BINDING_SITE:
-                return Containers.singletonSeries(bindingSite);
+                return Containers.singletonSequence(bindingSite);
             case SYNTHETIC:
-                return Containers.singletonSeries(syntheticLiteral);
+                return Containers.singletonSequence(syntheticLiteral);
             case STRING:
-                return Containers.singletonSeries(stringLiteral);
+                return Containers.singletonSequence(stringLiteral);
             default:
-                return Containers.emptySeries();
+                return Containers.emptySequence();
         }
     }
 

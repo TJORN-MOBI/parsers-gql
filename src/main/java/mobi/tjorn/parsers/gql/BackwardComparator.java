@@ -50,9 +50,9 @@ public class BackwardComparator implements Node {
     public Sequence<Node> children() {
         switch (getType()) {
             case EITHER:
-                return Containers.singletonSeries(eitherComparator);
+                return Containers.singletonSequence(eitherComparator);
             default:
-                return Containers.emptySeries();
+                return Containers.emptySequence();
         }
     }
 

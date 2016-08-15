@@ -56,12 +56,12 @@ public class Condition implements Node {
     public Sequence<Node> children() {
         switch (getType()) {
             case FORWARD:
-                return Containers.series(propertyName, forwardComparator, value);
+                return Containers.sequence(propertyName, forwardComparator, value);
             case BACKWARD:
-                return Containers.series(value, backwardComparator, propertyName);
+                return Containers.sequence(value, backwardComparator, propertyName);
             case IS_NULL:
             default:
-                return Containers.singletonSeries(propertyName);
+                return Containers.singletonSequence(propertyName);
         }
     }
 

@@ -44,10 +44,10 @@ public class ResultPosition implements Node {
     public Sequence<Node> children() {
         switch (getType()) {
             case BINDING_SITE:
-                return Containers.singletonSeries(bindingSite);
+                return Containers.singletonSequence(bindingSite);
             case INT:
             default:
-                return Containers.emptySeries();
+                return Containers.emptySequence();
         }
     }
 

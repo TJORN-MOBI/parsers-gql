@@ -44,10 +44,10 @@ public class Limit implements Node {
     public Sequence<Node> children() {
         switch (getType()) {
             case SINGLE:
-                return Containers.singletonSeries(first);
+                return Containers.singletonSequence(first);
             case DOUBLE:
             default:
-                return Containers.series(first, second);
+                return Containers.sequence(first, second);
         }
     }
 

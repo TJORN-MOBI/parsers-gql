@@ -50,13 +50,13 @@ public class Projection implements Node {
     public Sequence<Node> children() {
         switch (getType()) {
             case DISTINCT_ON:
-                return Containers.singletonSeries(distinctOn);
+                return Containers.singletonSequence(distinctOn);
             case DISTINCT:
             case PARTIAL:
-                return Containers.singletonSeries(projection);
+                return Containers.singletonSequence(projection);
             case FULL:
             default:
-                return Containers.emptySeries();
+                return Containers.emptySequence();
         }
     }
 

@@ -44,10 +44,10 @@ public class DistinctOn implements Node {
     public Sequence<Node> children() {
         switch (getType()) {
             case FULL:
-                return Containers.singletonSeries(distinctOn);
+                return Containers.singletonSequence(distinctOn);
             case PATIAL:
             default:
-                return Containers.series(distinctOn, projection);
+                return Containers.sequence(distinctOn, projection);
         }
     }
 

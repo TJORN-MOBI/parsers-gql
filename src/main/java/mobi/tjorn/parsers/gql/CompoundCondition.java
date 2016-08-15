@@ -43,9 +43,9 @@ public class CompoundCondition implements Node {
     @Override
     public Sequence<Node> children() {
         if (next == null) {
-            return Containers.singletonSeries(condition);
+            return Containers.singletonSequence(condition);
         }
-        return Containers.series(condition, next);
+        return Containers.sequence(condition, next);
     }
 
     @Override
