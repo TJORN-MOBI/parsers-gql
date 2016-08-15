@@ -29,7 +29,7 @@ buildscript {
 
 ```
 dependencies {
-    compile 'mobi.tjorn.parsers:gql:1.1.0'
+    compile 'mobi.tjorn.parsers:gql:1.2.0'
 }
 ```
 

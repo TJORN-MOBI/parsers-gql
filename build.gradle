@@ -27,7 +27,7 @@ def localProps = new Properties()
 localProps.load(project.rootProject.file('local.properties').newDataInputStream())
 
 group 'mobi.tjorn.parsers'
-version '1.1.0'
+version '1.2.0'
 description 'GQL Parser'
 def artifactBaseName = 'gql'
 
@@ -86,7 +86,7 @@ bintray {
         publicDownloadNumbers = true
         version {
             name = project.version
-            desc = 'Breaking change: renamed Series interface to Sequence.'
+            desc = 'Breaking change: renamed all methods in Containers class that contained word Series.  Updated JavaDoc.'
             vcsTag = 'v' + project.version
             gpg {
                 sign = true

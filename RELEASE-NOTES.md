@@ -1,5 +1,8 @@
 # GQL Parser Release Notes
 
+#####Version 1.2.0
+Breaking change: renamed all methods in Containers class that contained word Series.  Updated JavaDoc.
+
 #####Version 1.1.0
 Breaking change: renamed Series interface to Sequence.
 
