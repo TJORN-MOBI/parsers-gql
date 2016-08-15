@@ -28,6 +28,7 @@ public final class Containers {
     private final static Sequence0<?> instance = new Sequence0<Void>();
 
     private Containers() {
+        throw new AssertionError();
     }
 
     /**
